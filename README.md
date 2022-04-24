@@ -38,3 +38,83 @@ in that data and sends it to the banking application, the banking application sh
 data was not tweaked and the integrity is still maintained.
 That is where signatures come in later on.
 When you work with Oauth and JWT, you will learn about authorisation server and resource server.
+
+
+
+
+
+When you create your very first rest application and secure it in the next lecture, you will see a lot of
+magic happening behind the scenes.
+When you add the springboot security dependency in this lecture, I will walk you through all the important
+components that are responsible for that magic when a end user sends a request or a
+A restful client sends the request to our rest application.
+The very first component in spring security that intercepts that request is the authentication filter.
+The authentication filter is a servlet filter class that will see if the user has authenticated.
+If not, it will send that request to the authentication manager to check if the details sent by the
+user are correct.
+If the username and password are valid, the authentication manager in turn uses authentication, provided
+this is where the login logic or the authentication logic is defined.
+The authentication provider will not fetch the user details from the database or from L dap or in memory.
+It will use user details service for that purpose.
+It also uses a password.
+Encoder because we don't want to store passwords in plain text so the passwords will be encoded, the incoming
+password from the user will be encoded and then the comparison is done.
+Once the authentication provider checks, if the authentication details, the username, password, etc,
+are correct, then it will send the appropriate response back to the authentication manager.
+Authentication manager hands it back to the authentication filter if the user details are OK.
+If the authentication succeeded.
+The authentication filter will use a authentication success handler and stores that authentication
+information the user entity it self in a security context.
+In an instance of security context, if the authentication failed, it will use the authentication failure
+handler to send the appropriate response back to the client.
+So remember these six components authentication filter, authentication manager, authentication provider.
+This is where the login logic is defined.
+The user details service is responsible for fetching the user information.
+It could be from L dap it could be from an authorization server of Oauth it could be a database, in-memory,
+etc. And then the password encoder is responsible for encoding the passwords.
+Finally, the security context is where the user information is stored for future.
+Let's look at the spring docs and see how these classes will look like if you go to Google and simply
+search for spring authentication.
+Filter.
+Click on this class here authentication filter, you will go to the docs i have already opened all of this.
+The spring authentication filter is the only class.
+The rest of them are interfaces.
+And this class implements the Java X dot
+Servelet dot filter.
+It is a simple.
+Servelet filter that filters the incoming requests.
+It checks if the user has already logged in, if he has already logged in from the security context
+it knows about it, then it will not use all of this mechanism.
+Again, if he is sending the user name and password, if he hasn't already logged in, then it will
+start using all of these components.
+Next is the authentication provider.
+This is an interface, it has a method called authenticate.
+This is the method the authentication filter will invoke by passing in the user name and password through
+this authentication object.
+This guy uses that authentication manager.
+Then the authentication manager in turn uses user details, service and the password encoder
+And finally, if the login happens successfully, authentication happens successfully, the Servelet
+filter authentication filter will store that information in this security context as authentication
+object, as you can see, except for the filter, everything else here is an interface.
+So Spring provides some default implementations for all of these for password encoder.
+There are tons of implementations in the spring security crypto package, as you will see later o
+for the user details service the authentication manager and authentication provider.
+There are default implementations that will be enabled when you start using spring security automatically
+those implementations will be enabled and we can customize if we want to write our own user details
+service, which is very common, we will.
+Over right this
+This will implement this user detail service and do it.
+Same for the authentication manager.
+If you want to customize authentication manager, you simply write your own authentication manager.
+As you will see in lectures later on.
+You can configure all this stuff if you don't want to use the defaults.
+So remember, these key components filter manager provider a provider.
+This part here is very important, the authentication provider, because we can define our own authentication
+logic inside the authentication provider by implementing such a class.
+And the user details service is also important because we will be creating our own user detail service
+that can fetch the information from the database, etc..
+We will be using inbuilt password encoders which can encode and decode the password for us.
+Finally, the security context is internally used by authentication filter to store the information.
+The user information once the authentication is successful.
+
+
