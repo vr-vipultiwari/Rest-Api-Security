@@ -117,4 +117,5 @@ We will be using inbuilt password encoders which can encode and decode the passw
 Finally, the security context is internally used by authentication filter to store the information.
 The user information once the authentication is successful.
 
+![image](https://user-images.githubusercontent.com/48161515/165257937-ba27ca40-26de-4be4-b34d-296b3f47b807.png)
 
