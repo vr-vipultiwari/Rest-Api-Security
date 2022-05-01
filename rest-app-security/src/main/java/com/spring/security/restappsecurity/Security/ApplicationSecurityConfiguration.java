@@ -3,6 +3,7 @@ package com.spring.security.restappsecurity.Security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -23,10 +24,19 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
     @Override
     protected void configure(HttpSecurity http) throws Exception {
        http
+               .csrf().disable()
                // here we are telling that every request should be authenticated
                .authorizeRequests()
                .antMatchers("/","index","/css/*","/js/*").permitAll()
                .antMatchers("/api/**").hasRole(ApplicationUserRoles.STUDENT.name())
+               .antMatchers(HttpMethod.DELETE ,"/management/api/**").hasAuthority(ApplicationUserPermission.COURSE_WRITE.getPermission())
+               .antMatchers(HttpMethod.POST ,"/management/api/**").hasAuthority(ApplicationUserPermission.COURSE_WRITE.getPermission())
+               .antMatchers(HttpMethod.PUT ,"/management/api/**").hasAuthority(ApplicationUserPermission.COURSE_WRITE.getPermission())
+               .antMatchers("/management/api/**").hasAnyRole(
+                       ApplicationUserRoles.ADMIN.name(),
+                       ApplicationUserRoles.STUDENT.name(),
+                       ApplicationUserRoles.ADMINTRAINNE.name()
+                )
                .anyRequest()
                .authenticated()
                // here we are telling spring security to use basic auth as Authentication mechanism
@@ -41,13 +51,23 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
         UserDetails annaUser =  User.builder()
                 .username("anna")
                 .password(passwordEncoder.encode("password"))
-                .roles(ApplicationUserRoles.STUDENT.name()).build() ;
+                // .roles(ApplicationUserRoles.STUDENT.name()).build() ;
+                .authorities(ApplicationUserRoles.STUDENT.getGrantedAuthority())
+                .build() ;
 
         UserDetails lindaUser  = User.builder()
                 .username("linda")
                 .password(passwordEncoder.encode("linda123"))
-                .roles(ApplicationUserRoles.ADMIN.name()).build();
+               // .roles(ApplicationUserRoles.ADMIN.name()).build();
+                .authorities(ApplicationUserRoles.ADMIN.getGrantedAuthority())
+                .build() ;
 
-        return new InMemoryUserDetailsManager(annaUser,lindaUser);
+        UserDetails tomUser  =  User.builder().username("tom")
+                .password(passwordEncoder.encode("password123"))
+             // .roles(ApplicationUserRoles.ADMINTRAINNE.name()).build() ;
+                .authorities(ApplicationUserRoles.ADMINTRAINNE.getGrantedAuthority())
+                .build() ;
+
+        return new InMemoryUserDetailsManager(annaUser,lindaUser,tomUser);
     }
 }
