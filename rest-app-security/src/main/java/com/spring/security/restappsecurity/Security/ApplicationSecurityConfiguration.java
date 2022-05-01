@@ -26,6 +26,7 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
                // here we are telling that every request should be authenticated
                .authorizeRequests()
                .antMatchers("/","index","/css/*","/js/*").permitAll()
+               .antMatchers("/api/**").hasRole(ApplicationUserRoles.STUDENT.name())
                .anyRequest()
                .authenticated()
                // here we are telling spring security to use basic auth as Authentication mechanism
@@ -37,11 +38,16 @@ public class ApplicationSecurityConfiguration extends WebSecurityConfigurerAdapt
     @Override
     @Bean
     protected UserDetailsService userDetailsService() {
-        UserDetails user =  User.builder()
+        UserDetails annaUser =  User.builder()
                 .username("anna")
                 .password(passwordEncoder.encode("password"))
-                .roles("STUDENT").build() ;
+                .roles(ApplicationUserRoles.STUDENT.name()).build() ;
 
-        return new InMemoryUserDetailsManager(user);
+        UserDetails lindaUser  = User.builder()
+                .username("linda")
+                .password(passwordEncoder.encode("linda123"))
+                .roles(ApplicationUserRoles.ADMIN.name()).build();
+
+        return new InMemoryUserDetailsManager(annaUser,lindaUser);
     }
 }
