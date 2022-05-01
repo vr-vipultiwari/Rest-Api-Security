@@ -20,9 +20,9 @@ Drawback of basic auth is that we cannot logout once login because username and 
 
 🌀 Whenever we start our application , spring security creats an user in InMemoryDatabase with username as user and password is randomly generated password.
 
-🌀 Roles are nothing but high level view of users of your application. A Role comprises of several authority.
+🌀 Roles are nothing but high level view of users of your application. A Role comprises of several authority or permissions.
 
-🌀 
+🌀 We can also assign multiple roles to single user 
 
 
 
