@@ -30,7 +30,7 @@ In order to use Role and Permission base using Annotation. we can user @PreAutho
 CSRF stands for cross site request fogery , when we develop an appplication with csrf security enabled . sever sent a X-XSRF token to the client in cookies and for every subsequent request it expect that token then only it let the request to access the resources.
 
 
-
+# Remember-me is use to configure validity of the session id 
 
 
 
