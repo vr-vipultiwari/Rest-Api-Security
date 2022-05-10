@@ -2,6 +2,7 @@ package com.spring.security.restappsecurity.controller;
 
 
 import com.spring.security.restappsecurity.model.Student;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
@@ -19,20 +20,28 @@ public class StudentManagementController {
     )  ;
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ROLE_ADMINTRAINEE','ROLE_ADMIN')")
     public List<Student> getAllStudents() {
         return STUDENTS ;
     }
+
+
     @PostMapping
+    @PreAuthorize("hasAuthority('student:write')")
     public void registerNewStudent(@RequestBody Student student) {
-        STUDENTS.add(student);
+       // STUDENTS.add(student);
         System.out.println("registerNewStudent :" + student);
     }
+
     @DeleteMapping("/{studentId}")
+    @PreAuthorize("hasAuthority('student:write')")
     public void deleteStudent(@PathVariable("studentId") Integer studentId) {
         System.out.println("deleteStudent" + studentId);
     }
 
+
     @PutMapping(path="/{studentId}")
+    @PreAuthorize("hasAuthority('student:write')")
     public void updateStudent(Integer studentId , Student student) {
 
         System.out.println(String.format(" updateStudent :  %s  %s ",studentId,student));
