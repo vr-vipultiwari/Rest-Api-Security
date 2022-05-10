@@ -24,6 +24,14 @@ Drawback of basic auth is that we cannot logout once login because username and 
 
 🌀 We can also assign multiple roles to single user 
 
+In order to use Role and Permission base using Annotation. we can user @PreAuthorize annotation.
+
+
+CSRF stands for cross site request fogery , when we develop an appplication with csrf security enabled . sever sent a X-XSRF token to the client in cookies and for every subsequent request it expect that token then only it let the request to access the resources.
+
+
+
+
 
 
 
