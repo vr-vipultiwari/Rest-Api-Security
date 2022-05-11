@@ -32,6 +32,7 @@ CSRF stands for cross site request fogery , when we develop an appplication with
 
 # Remember-me is use to configure validity of the session id 
 
+the default session id will expire in 30 min of inactivity.
 
 
 
